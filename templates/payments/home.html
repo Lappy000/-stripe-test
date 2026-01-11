@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}ShopStore - Premium Products{% endblock %}
+{% block title %}ShopStore - Премиум товары{% endblock %}
 
 {% block content %}
 <div class="hero">
-    <h1>Welcome to ShopStore</h1>
-    <p>Discover premium products with secure Stripe payment</p>
+    <h1>Добро пожаловать в ShopStore</h1>
+    <p>Откройте для себя премиум товары с безопасной оплатой через Stripe</p>
 </div>
 
 <!-- Products Section -->
 <div class="card">
     <div class="section-header">
-        <h2>Our Products</h2>
-        <span class="badge badge-currency">{{ items|length }} items</span>
+        <h2>Наши товары</h2>
+        <span class="badge badge-currency">{{ items|length }} товаров</span>
     </div>
     
     {% if items %}
@@ -20,11 +21,13 @@
         {% for item in items %}
         <a href="{% url 'item_detail' item_id=item.id %}" class="product-card-link" style="text-decoration: none; color: inherit; display: block;">
             <div class="product-card">
-                <div class="product-image">
-                    {% if item.currency == 'usd' %}
-                        USD
-                    {% elif item.currency == 'eur' %}
-                        EUR
+                <div class="product-image" {% if item.image %}style="background: url('{% static 'img/' %}{{ item.image }}') center/cover no-repeat;"{% endif %}>
+                    {% if not item.image %}
+                        {% if item.currency == 'usd' %}
+                            USD
+                        {% elif item.currency == 'eur' %}
+                            EUR
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="product-content">
@@ -37,10 +40,10 @@
                         </div>
                         <div style="display: flex; gap: 0.5rem;">
                             <span class="btn btn-sm">
-                                Buy
+                                Купить
                             </span>
                             <span class="btn btn-secondary btn-sm" onclick="event.preventDefault(); window.location.href='{% url 'payment_intent_page' item_id=item.id %}';">
-                                Intent
+                                Оплата
                             </span>
                         </div>
                     </div>
@@ -51,8 +54,8 @@
     </div>
     {% else %}
     <div style="text-align: center; padding: 3rem; color: var(--gray);">
-        <p style="font-size: 1.125rem;">No products available</p>
-        <p style="margin-top: 1rem;">Add products via <a href="/admin/" style="color: var(--primary);">Admin Panel</a></p>
+        <p style="font-size: 1.125rem;">Товары пока недоступны</p>
+        <p style="margin-top: 1rem;">Добавьте товары через <a href="/admin/" style="color: var(--primary);">Панель администратора</a></p>
     </div>
     {% endif %}
 </div>
@@ -61,8 +64,8 @@
 {% if orders %}
 <div class="card">
     <div class="section-header">
-        <h2>Available Orders</h2>
-        <span class="badge badge-currency">{{ orders|length }} orders</span>
+        <h2>Доступные заказы</h2>
+        <span class="badge badge-currency">{{ orders|length }} заказов</span>
     </div>
     
     <div class="products-grid">
@@ -70,22 +73,22 @@
         <a href="{% url 'order_detail' order_id=order.id %}" class="product-card-link" style="text-decoration: none; color: inherit; display: block;">
             <div class="product-card">
                 <div class="product-image" style="background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);">
-                    Order
+                    Заказ
                 </div>
                 <div class="product-content">
-                    <h3 class="product-title">Order #{{ order.id }}</h3>
+                    <h3 class="product-title">Заказ #{{ order.id }}</h3>
                     <p class="product-description">
-                        {{ order.order_items.count }} item(s) in order
+                        {{ order.order_items.count }} товар(а) в заказе
                     </p>
                     <div style="margin: 1rem 0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         {% if order.discount %}
                         <span class="badge badge-discount">
-                            {{ order.discount.percent_off }}% OFF
+                            {{ order.discount.percent_off }}% скидка
                         </span>
                         {% endif %}
                         {% if order.tax %}
                         <span class="badge badge-tax">
-                            {{ order.tax.percentage }}% Tax
+                            {{ order.tax.percentage }}% налог
                         </span>
                         {% endif %}
                     </div>
@@ -95,7 +98,7 @@
                             <span class="product-currency">{{ order.currency|upper }}</span>
                         </div>
                         <span class="btn btn-sm">
-                            Pay
+                            Оплатить
                         </span>
                     </div>
                 </div>
@@ -108,27 +111,27 @@
 
 <!-- Features Section -->
 <div class="card">
-    <h2>Why Choose Us?</h2>
+    <h2>Почему мы?</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
         <div style="text-align: center; padding: 1.5rem; background: var(--gray-lighter); border-radius: 8px;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Secure</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Secure Payment</h3>
-            <p style="color: var(--gray);">All payments protected by Stripe with SSL encryption</p>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Безопасно</div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Безопасная оплата</h3>
+            <p style="color: var(--gray);">Все платежи защищены Stripe с SSL шифрованием</p>
         </div>
         <div style="text-align: center; padding: 1.5rem; background: var(--gray-lighter); border-radius: 8px;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Fast</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Fast Delivery</h3>
-            <p style="color: var(--gray);">Express delivery worldwide</p>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Быстро</div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Быстрая доставка</h3>
+            <p style="color: var(--gray);">Экспресс доставка по всему миру</p>
         </div>
         <div style="text-align: center; padding: 1.5rem; background: var(--gray-lighter); border-radius: 8px;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Quality</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Premium Quality</h3>
-            <p style="color: var(--gray);">Only original products from verified suppliers</p>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Качество</div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Премиум качество</h3>
+            <p style="color: var(--gray);">Только оригинальные товары от проверенных поставщиков</p>
         </div>
         <div style="text-align: center; padding: 1.5rem; background: var(--gray-lighter); border-radius: 8px;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Support</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">24/7 Support</h3>
-            <p style="color: var(--gray);">Our specialists are always ready to help</p>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">Поддержка</div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">Поддержка 24/7</h3>
+            <p style="color: var(--gray);">Наши специалисты всегда готовы помочь</p>
         </div>
     </div>
 </div>

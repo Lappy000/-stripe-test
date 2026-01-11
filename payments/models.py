@@ -9,15 +9,16 @@ from decimal import Decimal
 
 class Discount(models.Model):
     """
-    Discount model that can be applied to Orders.
-    Maps to Stripe Coupon/Discount.
+    Модель скидки для заказов.
+    Соответствует Stripe Coupon/Discount.
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Название")
     percent_off = models.DecimalField(
-        max_digits=5, 
+        max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))],
-        help_text="Discount percentage (e.g., 10.00 for 10%)"
+        verbose_name="Процент скидки",
+        help_text="Процент скидки (например, 10.00 для 10%)"
     )
     stripe_coupon_id = models.CharField(max_length=255, blank=True, null=True)
     
@@ -25,25 +26,27 @@ class Discount(models.Model):
         return f"{self.name} ({self.percent_off}%)"
     
     class Meta:
-        verbose_name = "Discount"
-        verbose_name_plural = "Discounts"
+        verbose_name = "Скидка"
+        verbose_name_plural = "Скидки"
 
 
 class Tax(models.Model):
     """
-    Tax model that can be applied to Orders.
-    Maps to Stripe Tax Rate.
+    Модель налога для заказов.
+    Соответствует Stripe Tax Rate.
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Название")
     percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))],
-        help_text="Tax percentage (e.g., 20.00 for 20%)"
+        verbose_name="Процент налога",
+        help_text="Процент налога (например, 20.00 для 20%)"
     )
     inclusive = models.BooleanField(
         default=False,
-        help_text="Whether the tax is included in the price"
+        verbose_name="Включён в цену",
+        help_text="Налог уже включён в стоимость товара"
     )
     stripe_tax_rate_id = models.CharField(max_length=255, blank=True, null=True)
     
@@ -51,8 +54,8 @@ class Tax(models.Model):
         return f"{self.name} ({self.percentage}%)"
     
     class Meta:
-        verbose_name = "Tax"
-        verbose_name_plural = "Taxes"
+        verbose_name = "Налог"
+        verbose_name_plural = "Налоги"
 
 
 class Item(models.Model):
@@ -60,21 +63,30 @@ class Item(models.Model):
     Product Item model with support for multiple currencies.
     """
     CURRENCY_CHOICES = [
-        ('usd', 'USD - US Dollar'),
-        ('eur', 'EUR - Euro'),
+        ('usd', 'USD - Доллар США'),
+        ('eur', 'EUR - Евро'),
     ]
     
-    name = models.CharField(max_length=255)
-    description = models.TextField()
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание")
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        validators=[MinValueValidator(Decimal('0.01'))]
+        validators=[MinValueValidator(Decimal('0.01'))],
+        verbose_name="Цена"
     )
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
-        default='usd'
+        default='usd',
+        verbose_name="Валюта"
+    )
+    image = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+        help_text="Имя файла изображения в папке img (например: smartwatch.jpg)"
     )
     
     def __str__(self):
@@ -85,9 +97,16 @@ class Item(models.Model):
         """Return price in cents for Stripe API."""
         return int(self.price * 100)
     
+    @property
+    def image_url(self):
+        """Return the URL for the item image."""
+        if self.image:
+            return f"/static/img/{self.image}"
+        return None
+    
     class Meta:
-        verbose_name = "Item"
-        verbose_name_plural = "Items"
+        verbose_name = "Товар"
+        verbose_name_plural = "Товары"
 
 
 class Order(models.Model):

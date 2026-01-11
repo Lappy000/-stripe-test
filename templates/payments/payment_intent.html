@@ -1,40 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}Pay for {{ item.name }} - ShopStore{% endblock %}
+{% block title %}Оплата {{ item.name }} - ShopStore{% endblock %}
 
 {% block content %}
 <div style="margin-bottom: 2rem;">
-    <a href="/item/{{ item.id }}/" class="btn btn-outline btn-sm">Back to item</a>
+    <a href="/item/{{ item.id }}/" class="btn btn-outline btn-sm">Назад к товару</a>
 </div>
 
 <div class="card">
-    <h1 style="margin-bottom: 1.5rem;">Complete Your Payment</h1>
+    <h1 style="margin-bottom: 1.5rem;">Завершите оплату</h1>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
         <!-- Order Summary -->
         <div style="background: var(--gray-lighter); padding: 1.5rem; border-radius: 8px;">
-            <h3 style="margin-bottom: 1rem;">Order Summary</h3>
+            <h3 style="margin-bottom: 1rem;">Итого заказа</h3>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
                 <span>{{ item.name }}</span>
                 <span style="font-weight: 600;">{{ item.price }} {{ item.currency|upper }}</span>
             </div>
             <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--gray-light);">
             <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
-                <span>Total</span>
+                <span>Итого</span>
                 <span>{{ total }} {{ item.currency|upper }}</span>
             </div>
         </div>
         
         <!-- Payment Form -->
         <div>
-            <h3 style="margin-bottom: 1rem;">Card Details</h3>
+            <h3 style="margin-bottom: 1rem;">Данные карты</h3>
             <form id="payment-form">
                 <div id="card-element">
                     <!-- Stripe Card Element will be inserted here -->
                 </div>
                 <div id="card-errors" role="alert" style="display: none;"></div>
                 <button id="submit" class="btn btn-lg" type="submit" style="width: 100%; margin-top: 1.5rem;">
-                    Pay {{ total }} {{ item.currency|upper }}
+                    Оплатить {{ total }} {{ item.currency|upper }}
                 </button>
             </form>
         </div>
@@ -43,24 +43,24 @@
 
 <!-- Test Cards Info -->
 <div class="card">
-    <h3>Test Cards for Payment</h3>
-    <p style="color: var(--gray); margin-bottom: 1rem;">Use these cards for testing:</p>
+    <h3>Тестовые карты для оплаты</h3>
+    <p style="color: var(--gray); margin-bottom: 1rem;">Используйте эти карты для тестирования:</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
         <div style="padding: 1rem; background: #dcfce7; border-radius: 8px; border-left: 4px solid var(--success);">
             <code style="font-size: 1rem; font-weight: 600;">4242 4242 4242 4242</code>
-            <p style="color: #166534; font-weight: 600; margin-top: 0.5rem;">Successful payment</p>
+            <p style="color: #166534; font-weight: 600; margin-top: 0.5rem;">Успешная оплата</p>
         </div>
         <div style="padding: 1rem; background: #fee2e2; border-radius: 8px; border-left: 4px solid var(--danger);">
             <code style="font-size: 1rem; font-weight: 600;">4000 0000 0000 0002</code>
-            <p style="color: #991b1b; font-weight: 600; margin-top: 0.5rem;">Card declined</p>
+            <p style="color: #991b1b; font-weight: 600; margin-top: 0.5rem;">Карта отклонена</p>
         </div>
         <div style="padding: 1rem; background: #fef3c7; border-radius: 8px; border-left: 4px solid var(--warning);">
             <code style="font-size: 1rem; font-weight: 600;">4000 0000 0000 9995</code>
-            <p style="color: #92400e; font-weight: 600; margin-top: 0.5rem;">Insufficient funds</p>
+            <p style="color: #92400e; font-weight: 600; margin-top: 0.5rem;">Недостаточно средств</p>
         </div>
     </div>
     <p style="color: var(--gray); margin-top: 1rem; font-size: 0.875rem;">
-        Use any future expiry date (e.g., 12/30) and any 3-digit CVC (e.g., 123)
+        Используйте любую будущую дату (например, 12/30) и любой 3-значный CVC (например, 123)
     </p>
 </div>
 {% endblock %}
@@ -111,7 +111,7 @@
         event.preventDefault();
         
         submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner"></span> Processing...';
+        submitButton.innerHTML = '<span class="spinner"></span> Обработка...';
         
         var clientSecret = '{{ client_secret }}';
         
@@ -127,7 +127,7 @@
             displayError.textContent = result.error.message;
             displayError.style.display = 'block';
             submitButton.disabled = false;
-            submitButton.innerHTML = 'Pay {{ total }} {{ item.currency|upper }}';
+            submitButton.innerHTML = 'Оплатить {{ total }} {{ item.currency|upper }}';
         } else {
             // Payment succeeded
             if (result.paymentIntent.status === 'succeeded') {

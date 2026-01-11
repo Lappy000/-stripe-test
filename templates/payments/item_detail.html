@@ -1,27 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ item.name }} - ShopStore{% endblock %}
 
 {% block content %}
 <div style="margin-bottom: 2rem;">
-    <a href="/" class="btn btn-outline btn-sm">Back to catalog</a>
+    <a href="/" class="btn btn-outline btn-sm">Назад в каталог</a>
 </div>
 
 <div class="card">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: start;">
         <!-- Product Image -->
         <div>
-            <div class="product-image" style="height: 350px; border-radius: 12px; margin-bottom: 1.5rem;">
-                {% if item.currency == 'usd' %}
-                    USD
-                {% elif item.currency == 'eur' %}
-                    EUR
+            <div class="product-image" style="height: 350px; border-radius: 12px; margin-bottom: 1.5rem; {% if item.image %}background: url('{% static 'img/' %}{{ item.image }}') center/cover no-repeat;{% endif %}">
+                {% if not item.image %}
+                    {% if item.currency == 'usd' %}
+                        USD
+                    {% elif item.currency == 'eur' %}
+                        EUR
+                    {% endif %}
                 {% endif %}
             </div>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <span class="badge badge-currency">{{ item.currency|upper }}</span>
-                <span class="badge" style="background: var(--gray-lighter); color: var(--gray);">In Stock</span>
-                <span class="badge" style="background: #dcfce7; color: #166534;">Warranty</span>
+                <span class="badge" style="background: var(--gray-lighter); color: var(--gray);">В наличии</span>
+                <span class="badge" style="background: #dcfce7; color: #166534;">Гарантия</span>
             </div>
         </div>
         
@@ -39,21 +42,21 @@
             </div>
             
             <div style="background: var(--gray-lighter); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
-                <h3 style="margin-bottom: 1rem; color: var(--dark);">Description</h3>
+                <h3 style="margin-bottom: 1rem; color: var(--dark);">Описание</h3>
                 <p style="color: var(--gray); line-height: 1.75;">{{ item.description }}</p>
             </div>
             
             <div style="margin: 2rem 0;">
-                <h3 style="margin-bottom: 1rem; color: var(--dark);">Payment Methods</h3>
+                <h3 style="margin-bottom: 1rem; color: var(--dark);">Способы оплаты</h3>
                 <div style="display: grid; gap: 1rem;">
                     <div style="padding: 1rem; border: 1px solid var(--gray-light); border-radius: 8px; transition: all 0.2s ease;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <h4 style="margin-bottom: 0.25rem; color: var(--dark);">Stripe Checkout</h4>
-                                <p style="color: var(--gray); font-size: 0.875rem;">Redirect to secure payment page</p>
+                                <p style="color: var(--gray); font-size: 0.875rem;">Переход на защищённую страницу оплаты</p>
                             </div>
                             <button id="buy-button" class="btn btn-lg">
-                                Buy Now
+                                Купить
                             </button>
                         </div>
                     </div>
@@ -62,10 +65,10 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <h4 style="margin-bottom: 0.25rem; color: var(--dark);">Payment Intent</h4>
-                                <p style="color: var(--gray); font-size: 0.875rem;">Embedded payment form on site</p>
+                                <p style="color: var(--gray); font-size: 0.875rem;">Встроенная форма оплаты на сайте</p>
                             </div>
                             <a href="{% url 'payment_intent_page' item_id=item.id %}" class="btn btn-secondary btn-lg">
-                                Pay Here
+                                Оплатить
                             </a>
                         </div>
                     </div>
@@ -75,19 +78,19 @@
             <!-- Features -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 2rem;">
                 <div style="text-align: center; padding: 1rem;">
-                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Secure</div>
-                    <p style="font-size: 0.8125rem; color: var(--gray);">Secure</p>
+                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Безопасно</div>
+                    <p style="font-size: 0.8125rem; color: var(--gray);">SSL защита</p>
                 </div>
                 <div style="text-align: center; padding: 1rem;">
-                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Fast</div>
-                    <p style="font-size: 0.8125rem; color: var(--gray);">Fast</p>
+                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Быстро</div>
+                    <p style="font-size: 0.8125rem; color: var(--gray);">Моментально</p>
                 </div>
                 <div style="text-align: center; padding: 1rem;">
-                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Reliable</div>
-                    <p style="font-size: 0.8125rem; color: var(--gray);">Reliable</p>
+                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Надёжно</div>
+                    <p style="font-size: 0.8125rem; color: var(--gray);">Гарантия</p>
                 </div>
                 <div style="text-align: center; padding: 1rem;">
-                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Cards</div>
+                    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">Карты</div>
                     <p style="font-size: 0.8125rem; color: var(--gray);">Visa/MC</p>
                 </div>
             </div>
@@ -97,24 +100,24 @@
 
 <!-- Test Cards Info -->
 <div class="card">
-    <h3>Test Cards for Payment</h3>
-    <p style="color: var(--gray); margin-bottom: 1rem;">Use these cards for testing:</p>
+    <h3>Тестовые карты для оплаты</h3>
+    <p style="color: var(--gray); margin-bottom: 1rem;">Используйте эти карты для тестирования:</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
         <div style="padding: 1rem; background: #dcfce7; border-radius: 8px; border-left: 4px solid var(--success);">
             <code style="font-size: 1rem; font-weight: 600;">4242 4242 4242 4242</code>
-            <p style="color: #166534; font-weight: 600; margin-top: 0.5rem;">Successful payment</p>
+            <p style="color: #166534; font-weight: 600; margin-top: 0.5rem;">Успешная оплата</p>
         </div>
         <div style="padding: 1rem; background: #fee2e2; border-radius: 8px; border-left: 4px solid var(--danger);">
             <code style="font-size: 1rem; font-weight: 600;">4000 0000 0000 0002</code>
-            <p style="color: #991b1b; font-weight: 600; margin-top: 0.5rem;">Card declined</p>
+            <p style="color: #991b1b; font-weight: 600; margin-top: 0.5rem;">Карта отклонена</p>
         </div>
         <div style="padding: 1rem; background: #fef3c7; border-radius: 8px; border-left: 4px solid var(--warning);">
             <code style="font-size: 1rem; font-weight: 600;">4000 0000 0000 9995</code>
-            <p style="color: #92400e; font-weight: 600; margin-top: 0.5rem;">Insufficient funds</p>
+            <p style="color: #92400e; font-weight: 600; margin-top: 0.5rem;">Недостаточно средств</p>
         </div>
     </div>
     <p style="color: var(--gray); margin-top: 1rem; font-size: 0.875rem;">
-        Use any future expiry date and any 3-digit CVC
+        Используйте любую будущую дату истечения и любой 3-значный CVC
     </p>
 </div>
 {% endblock %}
@@ -128,7 +131,7 @@
     buyButton.addEventListener('click', function() {
         // Disable button and show loading state
         buyButton.disabled = true;
-        buyButton.innerHTML = '<span class="spinner"></span> Processing...';
+        buyButton.innerHTML = '<span class="spinner"></span> Обработка...';
         
         // Create a new Checkout Session using the server-side endpoint
         fetch('/buy/{{ item.id }}/', {method: 'GET'})
@@ -137,9 +140,9 @@
         })
         .then(function(session) {
             if (session.error) {
-                alert('Error: ' + session.error);
+                alert('Ошибка: ' + session.error);
                 buyButton.disabled = false;
-                buyButton.innerHTML = 'Buy Now';
+                buyButton.innerHTML = 'Купить';
                 return;
             }
             // Redirect to Stripe Session Checkout
@@ -149,14 +152,14 @@
             if (result && result.error) {
                 alert(result.error.message);
                 buyButton.disabled = false;
-                buyButton.innerHTML = 'Buy Now';
+                buyButton.innerHTML = 'Купить';
             }
         })
         .catch(function(error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            alert('Произошла ошибка. Попробуйте ещё раз.');
             buyButton.disabled = false;
-            buyButton.innerHTML = 'Buy Now';
+            buyButton.innerHTML = 'Купить';
         });
     });
 </script>
