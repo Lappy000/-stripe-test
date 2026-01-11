@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled - ShopStore{% endblock %}
+
+{% block content %}
+<div class="cancel-message">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">Cancelled</div>
+    <h2>Payment Cancelled</h2>
+    <p style="margin-top: 1.5rem; font-size: 1.125rem; opacity: 0.95;">
+        Your payment was cancelled. No charges were made.
+    </p>
+    <p style="margin-top: 1rem; opacity: 0.9;">
+        You can return and try again at any time.
+    </p>
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/" class="btn btn-lg" style="background: white; color: #991b1b;">
+            Back to Store
+        </a>
+        <a href="javascript:history.back()" class="btn btn-lg" style="background: white; color: #991b1b;">
+            Back
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1rem; color: var(--dark);">Why was payment cancelled?</h3>
+    <div style="display: grid; gap: 1rem; margin-top: 1.5rem;">
+        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; background: var(--gray-lighter); border-radius: 8px;">
+            <span style="font-size: 1.25rem;">Back</span>
+            <div>
+                <h4 style="margin-bottom: 0.25rem; color: var(--dark);">User clicked Back</h4>
+                <p style="color: var(--gray); font-size: 0.875rem;">User returned to previous page</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; background: var(--gray-lighter); border-radius: 8px;">
+            <span style="font-size: 1.25rem;">Timeout</span>
+            <div>
+                <h4 style="margin-bottom: 0.25rem; color: var(--dark);">Session expired</h4>
+                <p style="color: var(--gray); font-size: 0.875rem;">Payment session expired due to long wait time</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; background: var(--gray-lighter); border-radius: 8px;">
+            <span style="font-size: 1.25rem;">Cancel</span>
+            <div>
+                <h4 style="margin-bottom: 0.25rem; color: var(--dark);">User cancelled</h4>
+                <p style="color: var(--gray); font-size: 0.875rem;">User clicked cancel button on payment page</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="text-align: center;">
+    <h3 style="margin-bottom: 1rem; color: var(--dark);">Need Help?</h3>
+    <p style="color: var(--gray); margin-bottom: 1.5rem;">
+        If you encountered issues with payment, our support team is ready to help.
+    </p>
+    <a href="mailto:support@shopstore.com" class="btn btn-outline">
+        Contact Support
+    </a>
+</div>
+{% endblock %}
