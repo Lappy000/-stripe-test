@@ -19,6 +19,7 @@ class Command(BaseCommand):
                 'description': 'High-quality cotton t-shirt with modern design. Perfect for everyday wear.',
                 'price': 29.99,
                 'currency': 'usd',
+                'image': 'tshirt.jpeg',
             }
         )
         
@@ -29,6 +30,7 @@ class Command(BaseCommand):
                 'description': 'Bluetooth 5.0 headphones with active noise cancellation and 30-hour battery life.',
                 'price': 149.99,
                 'currency': 'usd',
+                'image': 'wirelessheadphns.jpg',
             }
         )
         
@@ -39,6 +41,7 @@ class Command(BaseCommand):
                 'description': 'Feature-rich smartwatch with health monitoring, GPS, and water resistance.',
                 'price': 299.99,
                 'currency': 'usd',
+                'image': 'smartwatch.jpg',
             }
         )
         
@@ -50,6 +53,7 @@ class Command(BaseCommand):
                 'description': 'Genuine leather wallet with RFID protection. Handcrafted in Europe.',
                 'price': 49.99,
                 'currency': 'eur',
+                'image': 'leather wallet.png',
             }
         )
         
@@ -60,6 +64,7 @@ class Command(BaseCommand):
                 'description': 'Premium polarized sunglasses with UV400 protection.',
                 'price': 129.99,
                 'currency': 'eur',
+                'image': 'dgnsngls.jpg',
             }
         )
         
